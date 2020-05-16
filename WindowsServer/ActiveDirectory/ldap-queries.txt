@@ -1,0 +1,218 @@
+Computer accounts
+
+Computer accounts starting with WS
+(objectcategory=computer)(samaccountname=WS*)
+
+Computer accounts with "COP" in the attribute "description"
+(&(objectCategory=computer)(description=*COP*))
+or
+(&(objectCategory=computer)(description=*COP)) -->for only COP in the description
+
+Computer accounts with MS-SQL installed
+(&(objectCategory=computer)(servicePrincipalName=MSSQLSvc*))
+
+Computer accounts with a Server OS
+(&(objectCategory=computer)(operatingsystem=*server*))
+
+Find all Computers that do not have a Description
+(objectCategory=computer)(!description=*)
+
+Find All Workstations
+(sAMAccountType=805306369)
+or
+(&(objectCategory=computer)(objectClass=computer))
+
+Find all 2003 Servers Non-DCs
+(&(&(&(samAccountType=805306369)(!(primaryGroupId=516)))(objectCategory=computer)(operatingSystem=Windows Server 2003*)))
+
+Find all 2003 Servers – DCs
+(&(&(&(samAccountType=805306369)(primaryGroupID=516)(objectCategory=computer)(operatingSystem=Windows Server 2003*))))
+
+Find all Server 2008
+(&(&(&(&(samAccountType=805306369)(!(primaryGroupId=516)))(objectCategory=computer)(operatingSystem=Windows Server 2008*))))
+
+Find all 2008 Servers – DCs
+(&(&(&(&(primaryGroupID=516)(objectCategory=computer)(operatingSystem=Windows Server* 2008*)))))
+
+Disabled Computer Acounts
+(&(&(objectCategory=computer)(userAccountControl:1.2.840.113556.1.4.803:=2)))
+
+Enabled Computer Acounts
+(&(&(&(objectCategory=computer)(!userAccountControl:1.2.840.113556.1.4.803:=2))))
+
+SQL Servers any Windows Server OS
+(&(objectCategory=computer)(servicePrincipalName=MSSQLSvc*)(operatingSystem=Windows Server*))
+
+Exchange Servers any Windows Server OS
+(&(objectCategory=computer)(servicePrincipalName=exchangeMDB*)(operatingSystem=Windows Server*))
+
+Find all Windows XP SP3 computers
+(&(&(&(&(&(&(&(objectCategory=Computer)(operatingSystem=Windows XP Professional)(operatingSystemServicePack=Service Pack 3))))))))
+
+Find all Windows Vista SP1 computers
+(&(objectCategory=computer)(operatingSystem=Windows Vista*)(operatingSystemServicePack=Service Pack 1))
+
+Find all Windows Server 2008 Enterprise computers
+(&(objectCategory=computer)(operatingSystem=Windows Server® 2008 Enterprise)(operatingSystemServicePack=Service Pack 1))
+
+Find all Windows Server 2008 (all versions) computers
+(&(objectCategory=computer)(operatingSystem=Windows Server® 2008*))
+
+Find all Windows 8.0 (all versions) computers
+(&(objectCategory=computer)(operatingSystem=Windows 8*)(operatingSystemVersion=6.2 (9200))) 
+
+Find all Windows 8.1 (all versions) computers
+(&(objectCategory=computer)(operatingSystem=Windows 8.1*))
+
+Find all computer accounts for whom a manager is specified
+(&(&(objectCategory=computer)(objectClass=computer))
+(managedBy=*))
+
+
+Find all Windows Server 2012 (all versions) computers
+(&(objectCategory=computer)(operatingSystem=Windows Server 2012*))
+
+Find all Windows Server 2012 no R2 (all versions) computers
+(&(objectCategory=computer)(operatingSystem=Windows Server 2012*)(operatingSystemVersion=6.2 (9200))) 
+
+ Find all Windows Server 2012 R2 (all versions) computers
+(&(objectCategory=computer)(operatingSystem=Windows Server 2012 R2*)) 
+
+
+User accounts
+
+Find all user accounts
+(&(objectCategory=person)(objectClass=user))
+
+Find all user accounts for whom a password is not required
+(&(&(objectCategory=person)(objectClass=user))
+(UserAccountControl:1.2.840.113556.1.4.803:=32))
+
+Find all user accounts that do not require a SmartCard for logon
+(&(&(objectCategory=person)(objectClass=user))
+(!(UserAccountControl:1.2.840.113556.1.4.803:=262144)))
+
+Find users that have non-expiring passwords
+(objectCategory=person)(objectClass=user)(userAccountControl:1.2.840.113556.1.4.803:=65536)
+
+To find all user accounts that have the name “Mueller” in them
+(objectcategory=person)(samaccountname=*Mueller*)
+
+Locked out user accounts
+(&(objectCategory=person)(objectClass=user)(lockoutTime>=1))
+
+Useraccounts starting with "A" in the Attribute "Common Name"
+(&(objectCategory=user)(cn=A*))
+
+Diabled user accounts
+(&(objectCategory=person)(objectClass=user)(userAccountControl:1.2.840.113556.1.4.803:=2))
+
+Useraccounts without an value in Attribute "Mail"
+(&(objectCategory=person)(objectClass=user)(!mail=*))
+
+Useraccounts with Mail Enabled
+(objectClass=user)(mail=*)
+
+Useraccounts that have never logged on
+(&(objectCategory=person)(objectClass=user))(|(lastLogon=0)(!(lastLogon=*)))
+
+Users that have been given dial-in permissions
+(objectCategory=user)(msNPAllowDialin=TRUE)
+Users find who have admin in description field
+(objectcategory=person)(description=*admin*)
+
+Find user accounts with no log on script
+(objectcategory=person)(!scriptPath=*)
+
+Find user accounts with no profile path
+(objectcategory=person)(!profilepath=*)
+
+Find non disabled accounts that must change their password at next logon
+(objectCategory=person)(objectClass=user)(pwdLastSet=0)(!useraccountcontrol:1.2.840.113556.1.4.803:=2)
+
+Find all Users that need to change password on next login
+(&(objectCategory=user)(pwdLastSet=0))
+
+Finds all locked out accounts
+(objectCategory=person)(objectClass=user)(useraccountcontrol:1.2.840.113556.1.4.803:=16)
+
+Finds all Users with Email Address set
+(objectcategory=person)(mail=*)
+
+Finds all Users with no Email Address
+(objectcategory=person)(!mail=*)
+
+Find all Users with Dial-In permissions
+(objectCategory=user)(msNPAllowDialin=TRUE)
+
+Finds all disabled accounts in active directory
+(objectCategory=person)(objectClass=user)(useraccountcontrol:1.2.840.113556.1.4.803:=2)
+
+Find all Users that are almost Locked-Out
+Notice the “>=” that means “Greater than or equal to”.
+(objectCategory=user)(badPwdCount>=2)
+
+Find all mail-enabled groups hidden from the Global Address list (GAL)
+(&(&(objectCategory=group)(objectClass=group))
+(&(mailnickname=*)(msExchHideFromAddressLists=TRUE)))
+
+Find all mail-enabled security groups
+(&(&(objectCategory=group)(groupType:1.2.840.113556.1.4.804:=2147483648))
+(mailnickname=*))
+
+Find all mailbox-enabled accounts
+(&(&(objectCategory=person)(objectClass=user))
+(&(mailnickname=*)(|(msExchhomeServerName=*)(homeMDB=*))))
+
+Find all mailbox-enabled accounts with Outlook Web Access (OWA) disabled
+(&(&(objectCategory=person)(objectClass=user))
+(&(mailnickname=*)(|(msExchhomeServerName=*)(homeMDB=*))
+(|(protocolSettings=*HTTP§0*)(protocolSettings=*OWA§0*))))
+
+Find all users with Hidden Mailboxes
+(&(objectCategory=person)(objectClass=user)(msExchHideFromAddressLists=TRUE))
+
+(&(&(objectCategory=person)(objectClass=user))(lastLogon>=129772445240000000))
+
+
+
+Groups
+
+To find all groups that have no members
+(objectCategory=group)(!member=*)
+
+Find Groups that contains the word admin
+(objectcategory=group)(samaccountname=*admin*)
+
+Find all Universal Groups
+(groupType:1.2.840.113556.1.4.803:=8)
+
+Find all global security groups
+(&(objectCategory=group)
+(groupType:1.2.840.113556.1.4.803:=2147483650))
+
+Finds Domain Local Groups
+(groupType:1.2.840.113556.1.4.803:=4)
+
+Find all distribution groups
+(&(|(&(objectCategory=Group)(objectClass=Group)(|(groupType=8)(groupType=4)(groupType=2)))(objectCategory=ms-Exch-Dynamic-Distribution-List)(objectClass=msExchDynamicDistributionList)))
+
+List all groups with sec- prefix convention
+(&(objectCategory=group)(name=*sec-*))
+
+Find all security groups with members
+(&(objectCategory=group)
+(groupType:1.2.840.113556.1.4.804:=2147483648)(member=*))
+
+
+
+Service connection Points
+
+Find all service connection points
+(objectCategory=serviceConnectionPoint)
+
+Find all service connection points that do not have service bindings specified
+(&(objectCategory=serviceConnectionPoint)(!(serviceBindingInformation=*)))
+
+Find all service connection points that do not have a service DNS name specified
+(&(objectCategory=serviceConnectionPoint)(!(serviceDNSName=*)))

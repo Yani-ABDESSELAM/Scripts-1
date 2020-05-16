@@ -1,0 +1,3 @@
+#The line of Powershell above will give you all computer accounts who's pwdLastSet attribute (Powershell converts this into the human readable PasswordLastSet) is older than 180 days, freshest accounts will be at the top. Oldest accounts and those with null pwdLastSets will be at the bottom.
+
+Get-ADComputer -Filter * -SearchBase "OU=Workstations, DC=domain, DC=com" -Properties PasswordLastSet,LastLogonTimeStamp | Where-Object { $_.PasswordLastSet -LT $(Get-Date).AddDays(-90) } | Select-Object Name,PasswordLastSet,LastLogonTimeStamp | Sort-Object PasswordLastSet -Descending | Export-CSV "C:\Temp\StaleDevices.csv" -NoTypeInformation
