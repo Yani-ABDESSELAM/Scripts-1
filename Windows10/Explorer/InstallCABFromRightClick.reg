@@ -1,0 +1,17 @@
+Windows Registry Editor Version 5.00
+
+; Filename: InstallCABFromRightClick.reg
+; Author:   Cameron Kollwitz
+; Date:     01/03/2020
+; Email:    cameron@kollwitz.us
+
+[-HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs]
+
+; Add "Install CAB" to the right-click menu within Windows Explorer
+[HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs]
+@="Install CAB"
+"HasLUAShield"=""
+
+; Define the command to run for installation
+[HKEY_CLASSES_ROOT\CABFolder\Shell\RunAs\Command]
+@="cmd /k dism /online /add-package /packagepath:"%1""
