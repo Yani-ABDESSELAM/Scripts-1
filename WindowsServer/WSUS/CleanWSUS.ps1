@@ -1,0 +1,2 @@
+# One-liner to cleanup WSUS
+Get-WsusServer | Invoke-WsusServerCleanup -CleanupObsoleteComputers -CleanupUnneededContentFiles -CompressUpdates -DeclineSupersededUpdates -DeclineExpiredUpdates -CleanupObsoleteUpdates -Verbose
