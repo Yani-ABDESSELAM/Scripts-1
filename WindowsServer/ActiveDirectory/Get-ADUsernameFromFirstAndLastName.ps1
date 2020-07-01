@@ -1,5 +1,9 @@
-Import-Csv -Path $PSScriptRoot\first-and-last-names.csv | 
-  ForEach-Object{
-    Get-ADUser -Filter "GivenName -eq '$($_.FirstName)' -and Surname -eq '$($_.LastName)'" -Properties emailAddress
-  } |
-  Select-Object Name, emailAddress, SamAccountName, GivenName, Surname
+# Get-ADUserNameFromFirstAndLastName.ps1
+# The first line of the CSV file must match the filters used!
+
+$Names = Import-Csv "$PSScriptRoot\Get-ADUserNameFromFirstAndLastName.csv" -Header GivenName, Surname -Delimiter ";"
+ForEach ($Name in $Names) {
+  $FirstFilter = $Name.GivenName
+  $SecondFilter = $Name.Surname
+  Get-ADUser -Filter { GivenName -like $FirstFilter -and Surname -like $SecondFilter } -Properties EmailAddress | Select-Object EmailAddress
+}
